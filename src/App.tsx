@@ -1,18 +1,18 @@
-import React from 'react';
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import React from 'react'
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 
-import Article from './Article';
-import FrontPage from './FrontPage';
-import NotFound from './NotFound';
+import Article from './components/Article'
+import FrontPage from './components/FrontPage'
+import NotFound from './components/NotFound'
 
-import './App.css';
+import './App.css'
+import Header from './components/Header'
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <header className="App-header">
-        </header>
+        <Header />
         <Switch>
           <Route exact path="/">
             <FrontPage />
@@ -26,7 +26,7 @@ function App() {
         </Switch>
       </div>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
