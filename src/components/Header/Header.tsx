@@ -1,9 +1,9 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
-import logo from '../../assets/logo_nyt.svg'
+import logo from "../../assets/logo_nyt.svg";
 
-import './styles.scss'
+import "./styles.scss";
 
 const Header = () => {
   return (
@@ -12,7 +12,7 @@ const Header = () => {
         <img src={logo} alt="New York Times Logo" />
       </Link>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

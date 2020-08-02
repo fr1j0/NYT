@@ -1,32 +1,34 @@
-import React from 'react'
-import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import React from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
-import Article from './components/Article'
-import FrontPage from './components/FrontPage'
-import NotFound from './components/NotFound'
+import ArticleDetail from "./components/ArticleDetail";
+import FrontPage from "./components/FrontPage";
+import NotFound from "./components/NotFound";
+import Header from "./components/Header";
 
-import './App.css'
-import Header from './components/Header'
+import "./styles/App.scss";
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div className="app">
         <Header />
-        <Switch>
-          <Route exact path="/">
-            <FrontPage />
-          </Route>
-          <Route path="/:id">
-            <Article />
-          </Route>
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
+        <main className="app--main">
+          <Switch>
+            <Route exact path="/">
+              <FrontPage />
+            </Route>
+            <Route exact path="/:id">
+              <ArticleDetail />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        </main>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
