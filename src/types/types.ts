@@ -80,3 +80,5 @@ export type Articles = {
   list: ArticleData[];
   page: number;
 };
+
+export type ArticleSorting = "newest" | "oldest";

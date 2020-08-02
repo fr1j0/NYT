@@ -10,10 +10,12 @@ type ArticlesAction = {
 const articles = (state: Articles = defaultState, action: ArticlesAction) => {
   switch (action.type) {
     case "GET_ARTICLES":
-      console.log(state, action);
       return {
-        list: [...state.list, ...action.payload.articles],
-        page: action.payload.page + 1,
+        list:
+          action.payload.page === 0
+            ? [...action.payload.articles]
+            : [...state.list, ...action.payload.articles],
+        page: action.payload.page,
       };
     default:
       return state;
