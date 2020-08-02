@@ -9,17 +9,20 @@ type MatchParams = {
   id: string;
 };
 
+/**
+ * Article´s detail page
+ */
+
 const ArticleDetail = () => {
   const match = useRouteMatch<MatchParams>();
   const articleData: ArticleData | undefined = useSelector((state: RootState) =>
-    state.articles.list.find((article) =>
-      article.uri.includes(match?.params.id)
-    )
+    state.articles.find((article) => article.uri.includes(match?.params.id))
   );
 
   return (
     <section className="app--article-detail">
       <h2>{articleData?.headline.main}</h2>
+      <p className="app--article-detail-date">{articleData?.pub_date}</p>
       <p>{articleData?.abstract}</p>
       {articleData?.multimedia && articleData?.multimedia.length > 0 && (
         <img src={getImage(articleData?.multimedia, "xlarge")} alt=""></img>

@@ -1,6 +1,10 @@
 import React from "react";
 import "./styles.scss";
 
+/**
+ * Page to display when there is no route matching
+ */
+
 const NotFound = () => {
   return (
     <div className="app--not-found">

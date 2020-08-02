@@ -2,4 +2,83 @@
   display: flex;
   width: 100%;
   border-top: 1px solid #c5c5c5;
+
+  &-info {
+    width: 100%;
+  }
+}
+
+.app--article-pod-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  margin-bottom: 20px;
+}
+
+.app--article-pod-organization {
+  justify-self: flex-end;
+  font-style: italic;
+}
+
+.app--article-pod-section {
+  padding: 4px;
+  margin-right: 10px;
+  border-radius: 2px;
+
+  background-color: honeydew;
+
+  &__World {
+    background-color: lightgreen;
+  }
+
+  &__Sports {
+    background-color: yellowgreen;
+  }
+
+  &__Podcasts {
+    background-color: burlywood;
+  }
+
+  &__Health {
+    background-color: palevioletred;
+  }
+
+  &__Books {
+    background-color: lightcyan;
+  }
+
+  &__Briefing {
+    background-color: lightseagreen;
+  }
+
+  &__Arts {
+    background-color: lightsalmon;
+  }
+
+  &__US {
+    background-color: lightsteelblue;
+  }
+
+  &__BusinessDay {
+    background-color: coral;
+  }
+
+  &__Corrections {
+    background-color: turquoise;
+  }
+
+  &__NewYork {
+    background-color: chocolate;
+  }
+
+  &__SundayReview {
+    background-color: gold;
+  }
+
+  &__Obituaries {
+    background-color: gray;
+  }
 }

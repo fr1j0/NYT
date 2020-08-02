@@ -8,33 +8,38 @@ import Article from "../Article";
 import dotsLoader from "../../assets/three-dots.svg";
 import "./styles.scss";
 
+/**
+ * Front page, shows the list of articles and search results.
+ */
+
 const FrontPage = () => {
   const dispatch = useDispatch();
   const [articlesData, setArticlesData] = useState<ArticleData[]>([]);
-  const articles = useSelector((state: RootState) => state.articles.list);
-  // const page = useSelector((state: RootState) => state.articles.page);
+  const articles: ArticleData[] = useSelector(
+    (state: RootState) => state.articles
+  );
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sorting, setSorting] = useState<ArticleSorting>("newest");
+  const [error, setError] = useState<string | null>(null);
 
-  const [debouncedCallback] = useDebouncedCallback(
-    () => {
-      setLoading(true);
-      axios
-        .get(
-          `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchTerm}&sort=${sorting}&page=${page}&api-key=hWKUAlYkggUKA0zKpADDw9A53LQKeArk`
-        )
-        .then((res) => {
-          setPage((p) => p + 1);
-          dispatch(getArticlesAction(res.data.response.docs, page));
-        })
-        .catch((_) => {})
-        .finally(() => setLoading(false));
-    },
-    // delay in ms
-    500
-  );
+  const [debouncedCallback] = useDebouncedCallback(() => {
+    setError(null);
+    setLoading(true);
+    axios
+      .get(
+        `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchTerm}&sort=${sorting}&page=${page}&api-key=hWKUAlYkggUKA0zKpADDw9A53LQKeArk`
+      )
+      .then((res) => {
+        setPage((p) => p + 1);
+        dispatch(getArticlesAction(res.data.response.docs, page));
+      })
+      .catch((error) => {
+        setError(error.response.data.fault.faultstring);
+      })
+      .finally(() => setLoading(false));
+  }, 2000);
 
   useEffect(() => {
     if (page === 0) debouncedCallback();
@@ -109,6 +114,11 @@ const FrontPage = () => {
       {loading && (
         <section className="app--articles-loading">
           <img src={dotsLoader} alt="loading" />
+        </section>
+      )}
+      {error && (
+        <section className="app--articles-loading-error">
+          <p>{error}</p>
         </section>
       )}
     </section>

@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import logo from "../../assets/logo_nyt.svg";
-
 import "./styles.scss";
+
+/**
+ * NYT header
+ */
 
 const Header = () => {
   return (

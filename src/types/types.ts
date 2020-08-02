@@ -21,6 +21,7 @@ export type ArticleData = {
   news_desk: string;
   pub_date: string;
   section_name: string;
+  subsection_name: string;
   snippet: string;
   source: string;
   type_of_material: string;
@@ -73,12 +74,11 @@ export type MultimediaSubtype =
   | "wide";
 
 export type RootState = {
-  articles: { list: ArticleData[]; page: number };
+  articles: ArticleData[];
 };
 
 export type Articles = {
   list: ArticleData[];
-  page: number;
 };
 
 export type ArticleSorting = "newest" | "oldest";

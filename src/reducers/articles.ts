@@ -1,22 +1,16 @@
-import { ArticleData, Articles } from "../types/types";
-
-const defaultState: Articles = { list: [], page: 0 };
+import { ArticleData } from "../types/types";
 
 type ArticlesAction = {
   type: "GET_ARTICLES";
   payload: { articles: ArticleData[]; page: number };
 };
 
-const articles = (state: Articles = defaultState, action: ArticlesAction) => {
+const articles = (state: ArticleData[] = [], action: ArticlesAction) => {
   switch (action.type) {
     case "GET_ARTICLES":
-      return {
-        list:
-          action.payload.page === 0
-            ? [...action.payload.articles]
-            : [...state.list, ...action.payload.articles],
-        page: action.payload.page,
-      };
+      return action.payload.page === 0
+        ? [...action.payload.articles]
+        : [...state, ...action.payload.articles];
     default:
       return state;
   }
