@@ -1,10 +1,11 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useDebouncedCallback } from "use-debounce";
 import { getArticlesAction } from "../../actions/articles";
 import { ArticleData, RootState, ArticleSorting } from "../../types/types";
 import Article from "../Article";
+import Search from "./Search";
 import dotsLoader from "../../assets/three-dots.svg";
 import "./styles.scss";
 
@@ -14,7 +15,6 @@ import "./styles.scss";
 
 const FrontPage = () => {
   const dispatch = useDispatch();
-  const [articlesData, setArticlesData] = useState<ArticleData[]>([]);
   const articles: ArticleData[] = useSelector(
     (state: RootState) => state.articles
   );
@@ -24,6 +24,7 @@ const FrontPage = () => {
   const [sorting, setSorting] = useState<ArticleSorting>("newest");
   const [error, setError] = useState<string | null>(null);
 
+  // Debounced async API call
   const [debouncedCallback] = useDebouncedCallback(() => {
     setError(null);
     setLoading(true);
@@ -41,26 +42,20 @@ const FrontPage = () => {
       .finally(() => setLoading(false));
   }, 2000);
 
+  // Load 1st batch of articles
   useEffect(() => {
     if (page === 0) debouncedCallback();
   }, [debouncedCallback, page]);
 
+  // Triggers async call when searching
   useEffect(() => {
-    setArticlesData(articles);
-  }, [articles]);
-
-  useEffect(() => {
+    setPage(0);
     if (searchTerm.length > 0) {
-      setPage(0);
       debouncedCallback();
     }
   }, [debouncedCallback, sorting, searchTerm.length]);
 
-  useEffect(() => {
-    setPage(0);
-    debouncedCallback();
-  }, [debouncedCallback, searchTerm]);
-
+  // Triggers next page of articles loading when scrolling to the bottom of the page
   useEffect(() => {
     const handleScroll = (e: Event) => {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -68,47 +63,33 @@ const FrontPage = () => {
       }
     };
     window.addEventListener("scroll", handleScroll);
+    // Cleaning up the scroll listener
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [debouncedCallback]);
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+  // Search input handler
+  const handleSearchChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
-  };
+  }, []);
 
-  const handleSortingChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSorting(e.target.value as ArticleSorting);
-  };
+  // Sorting input handler
+  const handleSortingChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setSorting(e.target.value as ArticleSorting);
+    },
+    []
+  );
 
   return (
     <section className="app--articles">
-      <section className="app--articles-search">
-        <input placeholder="SEARCH" onInput={handleSearchChange} />
-        <div className="app--articles-search-sorting">
-          <label>
-            <input
-              type="radio"
-              name="sorting-radio"
-              value="newest"
-              checked={sorting === "newest"}
-              onChange={handleSortingChange}
-            />
-            newest
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="sorting-radio"
-              value="oldest"
-              checked={sorting !== "newest"}
-              onChange={handleSortingChange}
-            />
-            oldest
-          </label>
-        </div>
-      </section>
-      {articlesData.map((data, i) => (
+      <Search
+        sorting={sorting}
+        handleSearchChange={handleSearchChange}
+        handleSortingChange={handleSortingChange}
+      />
+      {articles.map((data, i) => (
         <Article key={i} data={data} />
       ))}
       {loading && (

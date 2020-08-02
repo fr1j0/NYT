@@ -11,7 +11,7 @@ type Props = {
 /**
  * Article pod for the front page
  *
- * @param data ArticleData
+ * @param {ArticleData} data Article information
  */
 
 const Article = ({ data }: Props) => {
